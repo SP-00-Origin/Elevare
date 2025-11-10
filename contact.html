@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELEVARE - Contact Us</title>
+    <meta name="description" content="Get in touch with ELEVARE for questions about courses, internships, and mentorship">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-left">
+                <button class="sidebar-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+                <!-- Logo -->
+                <div class="logo">
+                    <div class="logo-icon">🎓</div>
+                    <span class="logo-text">ELEVARE</span>
+                </div>
+            </div>
+            
+            
+            <!-- Sign In -->
+            <div class="auth">
+                <a href="signin.html" class="sign-in">Sign In</a>
+            </div>
+        </div>
+    </header>
+
+    <aside class="sidebar" aria-hidden="true">
+        <div class="sidebar-header">
+            <div class="logo">
+                <div class="logo-icon">🎓</div>
+                <span class="logo-text">ELEVARE</span>
+            </div>
+            <button class="sidebar-close" aria-label="Close navigation">✕</button>
+        </div>
+        <nav class="nav">
+            <a href="index.html" class="nav-link">HOME</a>
+            <a href="courses.html" class="nav-link">COURSES</a>
+            <a href="internships.html" class="nav-link">INTERNSHIPS</a>
+            <a href="portfolio.html" class="nav-link">PORTFOLIO</a>
+            <a href="mentorship.html" class="nav-link">MENTORSHIP</a>
+            <!-- <a href="about.html" class="nav-link">ABOUT</a> -->
+            <a href="contact.html" class="nav-link active">CONTACT</a>
+            <!-- <a href="careers.html" class="nav-link">CAREERS</a> -->
+            <a href="blog.html" class="nav-link">BLOG</a>
+            <a href="resources.html" class="nav-link">RESOURCES</a>
+        </nav>
+    </aside>
+    <div class="sidebar-overlay" tabindex="-1" aria-hidden="true"></div>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Page Header -->
+        <section class="page-header">
+            <div class="container">
+                <h1 class="page-title">CONTACT US</h1>
+                <p class="page-subtitle">We'd love to hear from you. Get in touch with our team.</p>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact-section">
+            <div class="container">
+                <div class="contact-content">
+                    <!-- Contact Form -->
+                    <div class="contact-form-container">
+                        <h2 class="form-title">Send us a message</h2>
+                        <form class="contact-form">
+                            <div class="form-group">
+                                <label for="name" class="form-label">Full Name</label>
+                                <input type="text" id="name" name="name" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" id="email" name="email" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="subject" class="form-label">Subject</label>
+                                <select id="subject" name="subject" class="form-select" required>
+                                    <option value="">Select a topic</option>
+                                    <option value="courses">Courses</option>
+                                    <option value="internships">Internships</option>
+                                    <option value="mentorship">Mentorship</option>
+                                    <option value="general">General Inquiry</option>
+                                    <option value="support">Technical Support</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="message" class="form-label">Message</label>
+                                <textarea id="message" name="message" class="form-textarea" rows="5" required></textarea>
+                            </div>
+                            <button type="submit" class="btn-primary large">SEND MESSAGE</button>
+                        </form>
+                    </div>
+
+                    <!-- Contact Info -->
+                    <div class="contact-info">
+                        <h3 class="info-title">Get in Touch</h3>
+                        <div class="contact-item">
+                            <div class="contact-icon">📧</div>
+                            <div class="contact-details">
+                                <h4>Email</h4>
+                                <p>hello@elevare.com</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">📞</div>
+                            <div class="contact-details">
+                                <h4>Phone</h4>
+                                <p>+1 (555) 123-4567</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">📍</div>
+                            <div class="contact-details">
+                                <h4>Address</h4>
+                                <p>123 Education St<br>San Francisco, CA 94105</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">🕒</div>
+                            <div class="contact-details">
+                                <h4>Office Hours</h4>
+                                <p>Mon-Fri: 9:00 AM - 6:00 PM<br>Sat-Sun: 10:00 AM - 4:00 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq-section">
+            <div class="container">
+                <h2 class="section-title">FREQUENTLY ASKED QUESTIONS</h2>
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <h3 class="faq-question">How do I enroll in a course?</h3>
+                        <p class="faq-answer">You can enroll in any course by visiting our Courses page, selecting your desired course, and clicking "Enroll Now". Payment options are available during checkout.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question">Are the internships paid?</h3>
+                        <p class="faq-answer">Most of our internship partners offer competitive compensation. Specific details about compensation are listed in each internship posting.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question">How does mentorship work?</h3>
+                        <p class="faq-answer">Our mentorship program connects you with industry professionals for 1-on-1 sessions. You can book sessions directly through our platform and choose mentors based on your career goals.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question">What support is available for students?</h3>
+                        <p class="faq-answer">We provide comprehensive support including career counseling, technical assistance, and access to our alumni network. Our student success team is available to help throughout your journey.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script>
+    (function() {
+        var body = document.body;
+        var toggle = document.querySelector('.sidebar-toggle');
+        var closeBtn = document.querySelector('.sidebar-close');
+        var overlay = document.querySelector('.sidebar-overlay');
+        function openSidebar() {
+            body.classList.add('sidebar-open');
+            toggle && toggle.setAttribute('aria-expanded', 'true');
+        }
+        function closeSidebar() {
+            body.classList.remove('sidebar-open');
+            toggle && toggle.setAttribute('aria-expanded', 'false');
+        }
+        toggle && toggle.addEventListener('click', function(){
+            if (body.classList.contains('sidebar-open')) { closeSidebar(); } else { openSidebar(); }
+        });
+        closeBtn && closeBtn.addEventListener('click', closeSidebar);
+        overlay && overlay.addEventListener('click', closeSidebar);
+        document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeSidebar(); });
+    })();
+    </script>
+</body>
+</html>
