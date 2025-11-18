@@ -17,50 +17,8 @@
 
 </head>
 
-<body>
-    <!-- Header -->
-        <header class="header">
-            <div class="container">
-                <div class="header-left">
-                    <!-- Sidebar Toggle (left corner) -->
-                    <button class="sidebar-toggle" aria-label="Toggle navigation" aria-expanded="true">☰</button>
-                    <!-- Logo -->
-                    <div class="logo">
-                        <div class="logo-icon">🎓</div>
-                        <span class="logo-text">ELEVARE</span>
-                    </div>
-                </div>
-            
-            <!-- Sign In -->
-            <div class="auth">
-                <a href="signin.html" class="sign-in">Sign In</a>
-            </div>
-        </div>
-    </header>
-
-    <!-- Sidebar Navigation -->
-    <aside class="sidebar" aria-hidden="true">
-        <div class="sidebar-header">
-            <div class="logo">
-                <div class="logo-icon">🎓</div>
-                <span class="logo-text">ELEVARE</span>
-            </div>
-            <button class="sidebar-close" aria-label="Close navigation">✕</button>
-        </div>
-        <nav class="nav">
-            <a href="index.html" class="nav-link active">HOME</a>
-            <a href="courses.html" class="nav-link">COURSES</a>
-            <a href="internships.html" class="nav-link">INTERNSHIPS</a>
-            <a href="portfolio.html" class="nav-link">PORTFOLIO</a>
-            <a href="mentorship.html" class="nav-link">MENTORSHIP</a>
-            <!-- <a href="about.html" class="nav-link">ABOUT</a> -->
-            <a href="contact.html" class="nav-link">CONTACT</a>
-            <!-- <a href="careers.html" class="nav-link">CAREERS</a> -->
-            <a href="blog.html" class="nav-link">BLOG</a>
-            <a href="resources.html" class="nav-link">RESOURCES</a>
-        </nav>
-    </aside>
-    <div class="sidebar-overlay" tabindex="-1" aria-hidden="true"></div>
+<body data-page="home">
+    <script src="nav.js"></script>
 
     <!-- Main Content -->
     <main class="main">
@@ -83,48 +41,48 @@
         </section>
 
         <!-- Everything You Need to Succeed Section -->
-        <section class="everything-section">
+       <section class="everything-section">
             <div class="container">
                 <div class="section-header">
                     <h2 class="everything-title">EVERYTHING YOU NEED TO<br><span class="underlined">SUCCEED</span></h2>
                 </div>
                 
                 <div class="courses-grid">
-                    <div class="course-card">
+                    <a class="course-card" href="courses.html">
                         <div class="course-icon">🧠</div>
                         <h3 class="course-title">Skill-Focused Courses</h3>
                         <p class="course-description">Master technical and soft skills with industry-relevant courses designed for the modern workforce.</p>
-                    </div>
+                    </a>
                     
-                    <div class="course-card">
+                    <a class="course-card" href="internships.html">
                         <div class="course-icon">📈</div>
-                        <h3 class="course-title">Skill-Focused Courses</h3>
+                        <h3 class="course-title">Internships</h3>
                         <p class="course-description">Master technical and soft skills with industry-relevant courses designed for the modern workforce.</p>
-                    </div>
+                    </a>
                     
-                    <div class="course-card">
+                    <a class="course-card" href="portfolio.html">
                         <div class="course-icon">📈</div>
-                        <h3 class="course-title">Skill-Focused Courses</h3>
+                        <h3 class="course-title">Portfolio Builder</h3>
                         <p class="course-description">Master technical and soft skills with industry-relevant courses designed for the modern workforce.</p>
-                    </div>
+                    </a>
                     
-                    <div class="course-card">
+                    <a class="course-card" href="blog.html">
                         <div class="course-icon">🧠</div>
-                        <h3 class="course-title">Skill-Focused Courses</h3>
+                        <h3 class="course-title">Blogs</h3>
                         <p class="course-description">Master technical and soft skills with industry-relevant courses designed for the modern workforce.</p>
-                    </div>
+                    </a>
                     
-                    <div class="course-card">
+                    <a class="course-card" href="resources.html">
                         <div class="course-icon">🧠</div>
-                        <h3 class="course-title">Skill-Focused Courses</h3>
+                        <h3 class="course-title">Resources</h3>
                         <p class="course-description">Master technical and soft skills with industry-relevant courses designed for the modern workforce.</p>
-                    </div>
+                    </a>
                     
-                    <div class="course-card">
+                    <a class="course-card" href="contact.html">
                         <div class="course-icon">📈</div>
-                        <h3 class="course-title">Skill-Focused Courses</h3>
+                        <h3 class="course-title">Contact</h3>
                         <p class="course-description">Master technical and soft skills with industry-relevant courses designed for the modern workforce.</p>
-                    </div>
+                    </a>
                 </div>
             </div>
         </section>
@@ -217,27 +175,5 @@
             </div>
         </div>
     </footer>
-    <script>
-    (function() {
-        var body = document.body;
-        var toggle = document.querySelector('.sidebar-toggle');
-        var closeBtn = document.querySelector('.sidebar-close');
-        var overlay = document.querySelector('.sidebar-overlay');
-        function openSidebar() {
-            body.classList.add('sidebar-open');
-            toggle.setAttribute('aria-expanded', 'true');
-        }
-        function closeSidebar() {
-            body.classList.remove('sidebar-open');
-            toggle.setAttribute('aria-expanded', 'false');
-        }
-        toggle && toggle.addEventListener('click', function(){
-            if (body.classList.contains('sidebar-open')) { closeSidebar(); } else { openSidebar(); }
-        });
-        closeBtn && closeBtn.addEventListener('click', closeSidebar);
-        overlay && overlay.addEventListener('click', closeSidebar);
-        document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeSidebar(); });
-    })();
-    </script>
 </body>
 </html>

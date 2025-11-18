@@ -1,12 +1,17 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const path = require('path');
 const fs = require('fs');
+const connectDB = require('./config/database');
 
 // Create Express app
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Connect to MongoDB
+connectDB();
 
 // Middleware
 app.use(cors());
@@ -20,10 +25,14 @@ app.use(express.static(path.join(__dirname)));
 // Import route modules
 const coursesRoutes = require('./routes/courses');
 const blogRoutes = require('./routes/blog');
+const authRoutes = require('./routes/auth');
+const usersRoutes = require('./routes/users');
 
 // Use route modules
 app.use('/api/courses', coursesRoutes);
 app.use('/api/blog', blogRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/users', usersRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

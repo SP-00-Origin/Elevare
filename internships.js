@@ -31,7 +31,16 @@
         if (companyEl) companyEl.textContent = internship.company;
         if (locationEl) locationEl.textContent = internship.location;
         if (descEl) descEl.textContent = internship.description;
-        if (applyEl) applyEl.href = internship.applyUrl || '#';
+        if (applyEl) {
+            applyEl.href = '#';
+            applyEl.setAttribute('data-internship-id', internship.title.toLowerCase().replace(/\s+/g, '-'));
+            applyEl.setAttribute('data-internship-title', internship.title);
+            applyEl.setAttribute('data-internship-company', internship.company);
+            applyEl.addEventListener('click', function(e) {
+                e.preventDefault();
+                openApplicationModal(internship);
+            });
+        }
         if (tagsEl) {
             tagsEl.innerHTML = '';
             internship.tags.forEach(function (t) {
@@ -47,9 +56,12 @@
 
     var listEl = document.querySelector('.internship-list');
     var template = document.getElementById('internship-card-template');
+    var searchInput = document.getElementById('internshipSearch');
+    var allInternships = [];
+    
     if (!listEl || !template) return;
 
-    // Simple data: create instances with an object literal
+    // Hardcoded internships data (in a real app, this would come from an API)
     var internships = [
         new Internship({
             title: 'Frontend Developer Intern',
@@ -81,16 +93,6 @@
             category: 'DESIGN',
             applyUrl: '#'
         }),
-         new Internship({
-            title: 'Marketing Analytics Intern',
-            company: 'DataDriven Solutions',
-            location: 'New York, NY',
-            icon: '📊',
-            description: 'Help analyze marketing campaigns and create data-driven insights to optimize marketing strategies.',
-            tags: ['Analytics', 'SQL', 'Marketing'],
-            category: 'MARKETING',
-            applyUrl: '#'
-        }),
         new Internship({
             title: 'Business Analyst Intern',
             company: 'Insight Partners',
@@ -100,30 +102,215 @@
             tags: ['Excel', 'Communication', 'Problem Solving'],
             category: 'BUSINESS',
             applyUrl: '#'
+        }),
+        new Internship({
+            title: 'Backend Developer Intern',
+            company: 'CloudTech Systems',
+            location: 'Seattle, WA',
+            icon: '⚙️',
+            description: 'Build scalable APIs and microservices using Node.js, Python, and cloud technologies.',
+            tags: ['Node.js', 'Python', 'AWS'],
+            category: 'TECHNOLOGY',
+            applyUrl: '#'
+        }),
+        new Internship({
+            title: 'Social Media Marketing Intern',
+            company: 'BrandBoost Agency',
+            location: 'Los Angeles, CA',
+            icon: '📱',
+            description: 'Manage social media campaigns and create engaging content for various platforms.',
+            tags: ['Content Creation', 'Social Media', 'Canva'],
+            category: 'MARKETING',
+            applyUrl: '#'
         })
     ];
 
-    // Fill list
-    listEl.innerHTML = '';
-    var frag = document.createDocumentFragment();
-    internships.forEach(function (i) { frag.appendChild(renderCard(i, template)); });
-    listEl.appendChild(frag);
+    allInternships = internships;
 
-    // // Simple filter using existing tabs
-    // var tabs = Array.prototype.slice.call(document.querySelectorAll('.filter-tab'));
-    // function setActive(tab) { tabs.forEach(function (t) { t.classList.toggle('active', t === tab); }); }
-    // // function applyFilter(category) {
-    // //     var items = listEl.querySelectorAll('.internship-item');
-    // //     var selected = String(category).toUpperCase();
-    // //     items.forEach(function (el) {
-    // //         var cat = (el.getAttribute('data-category') || 'ALL').toUpperCase();
-    // //         el.style.display = (selected === 'ALL' || selected === cat) ? '' : 'none';
-    // //     });
-    // // }
-    // tabs.forEach(function (tab) {
-    //     tab.addEventListener('click', function () {
-    //         setActive(tab);
-    //         applyFilter(tab.textContent.trim());
-    //     });
-    // });
+    // Function to render internships
+    function renderInternships(internshipsToRender) {
+        listEl.innerHTML = '';
+        
+        if (internshipsToRender.length === 0) {
+            listEl.innerHTML = '<p style="text-align:center;padding:40px;color:#6c757d;">No internships found matching your search.</p>';
+            return;
+        }
+        
+        var frag = document.createDocumentFragment();
+        internshipsToRender.forEach(function (i) { 
+            frag.appendChild(renderCard(i, template)); 
+        });
+        listEl.appendChild(frag);
+    }
+
+    // Initial render
+    renderInternships(allInternships);
+
+    // Search functionality
+    if (searchInput) {
+        searchInput.addEventListener('input', function(e) {
+            var query = e.target.value.toLowerCase().trim();
+            
+            if (query === '') {
+                renderInternships(allInternships);
+                return;
+            }
+            
+            var filtered = allInternships.filter(function(internship) {
+                return (internship.title && internship.title.toLowerCase().includes(query)) ||
+                       (internship.company && internship.company.toLowerCase().includes(query)) ||
+                       (internship.location && internship.location.toLowerCase().includes(query)) ||
+                       (internship.description && internship.description.toLowerCase().includes(query));
+            });
+            
+            renderInternships(filtered);
+        });
+    }
+
+    // Filter tabs functionality
+    var tabs = Array.prototype.slice.call(document.querySelectorAll('.filter-tab'));
+    function setActive(tab) { 
+        tabs.forEach(function (t) { t.classList.toggle('active', t === tab); }); 
+    }
+    
+    function applyFilter(category) {
+        var selected = String(category).toUpperCase();
+        var filtered = selected === 'ALL' 
+            ? allInternships 
+            : allInternships.filter(function(i) { 
+                return i.category === selected; 
+            });
+        renderInternships(filtered);
+    }
+    
+    tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+            setActive(tab);
+            applyFilter(tab.textContent.trim());
+            // Clear search when changing tabs
+            if (searchInput) searchInput.value = '';
+        });
+    });
+
+    // Modal functionality
+    var modal = document.getElementById('applicationModal');
+    var closeBtn = document.querySelector('.close-modal');
+    var cancelBtn = document.getElementById('cancelApplication');
+    var applicationForm = document.getElementById('applicationForm');
+
+    function openApplicationModal(internship) {
+        var userId = localStorage.getItem('userId');
+        
+        if (!userId) {
+            alert('Please sign in to apply for internships.');
+            window.location.href = 'signin.html';
+            return;
+        }
+
+        // Set internship details
+        document.getElementById('internshipId').value = internship.title.toLowerCase().replace(/\s+/g, '-');
+        document.getElementById('internshipTitle').value = internship.title;
+        document.getElementById('internshipCompany').value = internship.company;
+
+        // Auto-fill user data
+        var userName = localStorage.getItem('userName');
+        var userEmail = localStorage.getItem('userEmail');
+        var userPhone = localStorage.getItem('userPhone');
+
+        if (userName) document.getElementById('applicantName').value = userName;
+        if (userEmail) document.getElementById('applicantEmail').value = userEmail;
+        if (userPhone) document.getElementById('applicantPhone').value = userPhone;
+
+        // If data not in localStorage, fetch from API
+        if (!userName || !userEmail || !userPhone) {
+            fetch('/api/users/' + userId)
+                .then(function(res) { return res.json(); })
+                .then(function(data) {
+                    if (data.name) {
+                        document.getElementById('applicantName').value = data.name;
+                        localStorage.setItem('userName', data.name);
+                    }
+                    if (data.email) {
+                        document.getElementById('applicantEmail').value = data.email;
+                        localStorage.setItem('userEmail', data.email);
+                    }
+                    if (data.phone) {
+                        document.getElementById('applicantPhone').value = data.phone;
+                        localStorage.setItem('userPhone', data.phone);
+                    }
+                })
+                .catch(function(err) {
+                    console.error('Error fetching user data:', err);
+                });
+        }
+
+        modal.style.display = 'block';
+    }
+
+    function closeApplicationModal() {
+        modal.style.display = 'none';
+        applicationForm.reset();
+    }
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeApplicationModal);
+    }
+
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', closeApplicationModal);
+    }
+
+    // Close modal when clicking outside
+    window.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            closeApplicationModal();
+        }
+    });
+
+    // Form submission
+    if (applicationForm) {
+        applicationForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            var userId = localStorage.getItem('userId');
+            if (!userId) {
+                alert('Please sign in to apply.');
+                window.location.href = 'signin.html';
+                return;
+            }
+
+            var formData = {
+                internshipId: document.getElementById('internshipId').value,
+                internshipTitle: document.getElementById('internshipTitle').value,
+                internshipCompany: document.getElementById('internshipCompany').value,
+                applicantName: document.getElementById('applicantName').value,
+                applicantEmail: document.getElementById('applicantEmail').value,
+                applicantPhone: document.getElementById('applicantPhone').value,
+                coverLetter: document.getElementById('coverLetter').value,
+                appliedDate: new Date().toISOString(),
+                status: 'pending'
+            };
+
+            // Note: File upload would require FormData and multipart/form-data
+            // For now, we'll just save the application data without the file
+            
+            fetch('/api/users/' + userId + '/apply-internship', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            })
+            .then(function(res) {
+                if (!res.ok) throw new Error('Application failed');
+                return res.json();
+            })
+            .then(function(data) {
+                alert('Application submitted successfully! You can view your applications in your profile.');
+                closeApplicationModal();
+            })
+            .catch(function(err) {
+                console.error('Error submitting application:', err);
+                alert('Failed to submit application. Please try again.');
+            });
+        });
+    }
 })();

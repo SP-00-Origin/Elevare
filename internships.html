@@ -7,49 +7,8 @@
     <meta name="description" content="Find exciting internship opportunities to kickstart your career">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <!-- Header -->
-    <header class="header">
-        <div class="container">
-            <div class="header-left">
-                <button class="sidebar-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
-                <!-- Logo -->
-                <div class="logo">
-                    <div class="logo-icon">🎓</div>
-                    <span class="logo-text">ELEVARE</span>
-                </div>
-            </div>
-            
-            
-            <!-- Sign In -->
-            <div class="auth">
-                <a href="signin.html" class="sign-in">Sign In</a>
-            </div>
-        </div>
-    </header>
-
-    <aside class="sidebar" aria-hidden="true">
-        <div class="sidebar-header">
-            <div class="logo">
-                <div class="logo-icon">🎓</div>
-                <span class="logo-text">ELEVARE</span>
-            </div>
-            <button class="sidebar-close" aria-label="Close navigation">✕</button>
-        </div>
-        <nav class="nav">
-            <a href="index.html" class="nav-link">HOME</a>
-            <a href="courses.html" class="nav-link">COURSES</a>
-            <a href="internships.html" class="nav-link active">INTERNSHIPS</a>
-            <a href="portfolio.html" class="nav-link">PORTFOLIO</a>
-            <a href="mentorship.html" class="nav-link">MENTORSHIP</a>
-            <!-- <a href="about.html" class="nav-link">ABOUT</a> -->
-            <a href="contact.html" class="nav-link">CONTACT</a>
-            <!-- <a href="careers.html" class="nav-link">CAREERS</a> -->
-            <a href="blog.html" class="nav-link">BLOG</a>
-            <a href="resources.html" class="nav-link">RESOURCES</a>
-        </nav>
-    </aside>
-    <div class="sidebar-overlay" tabindex="-1" aria-hidden="true"></div>
+<body data-page="internships">
+    <script src="nav.js"></script>
 
     <!-- Main Content -->
     <main class="main">
@@ -58,6 +17,11 @@
             <div class="container">
                 <h1 class="page-title">INTERNSHIPS</h1>
                 <p class="page-subtitle">Gain real-world experience with top companies</p>
+                
+                <!-- Search Bar -->
+                <div class="search-container">
+                    <input type="text" id="internshipSearch" class="search-input" placeholder="🔍 Search internships by title, company, or location...">
+                </div>
             </div>
         </section>
 
@@ -105,28 +69,54 @@
             </div>
         </section>
     </main>
-    <script>
-    (function() {
-        var body = document.body;
-        var toggle = document.querySelector('.sidebar-toggle');
-        var closeBtn = document.querySelector('.sidebar-close');
-        var overlay = document.querySelector('.sidebar-overlay');
-        function openSidebar() {
-            body.classList.add('sidebar-open');
-            toggle && toggle.setAttribute('aria-expanded', 'true');
-        }
-        function closeSidebar() {
-            body.classList.remove('sidebar-open');
-            toggle && toggle.setAttribute('aria-expanded', 'false');
-        }
-        toggle && toggle.addEventListener('click', function(){
-            if (body.classList.contains('sidebar-open')) { closeSidebar(); } else { openSidebar(); }
-        });
-        closeBtn && closeBtn.addEventListener('click', closeSidebar);
-        overlay && overlay.addEventListener('click', closeSidebar);
-        document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeSidebar(); });
-    })();
-    </script>
+
+    <!-- Application Modal -->
+    <div id="applicationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Apply for Internship</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="applicationForm">
+                    <input type="hidden" id="internshipId" name="internshipId">
+                    <input type="hidden" id="internshipTitle" name="internshipTitle">
+                    <input type="hidden" id="internshipCompany" name="internshipCompany">
+                    
+                    <div class="form-group">
+                        <label for="applicantName">Full Name *</label>
+                        <input type="text" id="applicantName" name="applicantName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="applicantEmail">Email *</label>
+                        <input type="email" id="applicantEmail" name="applicantEmail" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="applicantPhone">Phone Number *</label>
+                        <input type="tel" id="applicantPhone" name="applicantPhone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="coverLetter">Cover Letter *</label>
+                        <textarea id="coverLetter" name="coverLetter" rows="6" placeholder="Tell us why you're interested in this internship..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="resume">Resume (PDF or Word) *</label>
+                        <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" required>
+                    </div>
+                    
+                    <div class="modal-actions">
+                        <button type="button" class="btn-secondary" id="cancelApplication">Cancel</button>
+                        <button type="submit" class="btn-primary">Submit Application</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
     <!-- OOP internships logic extracted to external file for clarity -->
     <script src="internships.js"></script>
 </body>
