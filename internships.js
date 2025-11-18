@@ -225,18 +225,21 @@
         if (!userName || !userEmail || !userPhone) {
             fetch('/api/users/' + userId)
                 .then(function(res) { return res.json(); })
-                .then(function(data) {
-                    if (data.name) {
-                        document.getElementById('applicantName').value = data.name;
-                        localStorage.setItem('userName', data.name);
-                    }
-                    if (data.email) {
-                        document.getElementById('applicantEmail').value = data.email;
-                        localStorage.setItem('userEmail', data.email);
-                    }
-                    if (data.phone) {
-                        document.getElementById('applicantPhone').value = data.phone;
-                        localStorage.setItem('userPhone', data.phone);
+                .then(function(response) {
+                    if (response.success && response.data && response.data.user) {
+                        var user = response.data.user;
+                        if (user.name) {
+                            document.getElementById('applicantName').value = user.name;
+                            localStorage.setItem('userName', user.name);
+                        }
+                        if (user.email) {
+                            document.getElementById('applicantEmail').value = user.email;
+                            localStorage.setItem('userEmail', user.email);
+                        }
+                        if (user.phone) {
+                            document.getElementById('applicantPhone').value = user.phone;
+                            localStorage.setItem('userPhone', user.phone);
+                        }
                     }
                 })
                 .catch(function(err) {
@@ -273,6 +276,8 @@
             e.preventDefault();
             
             var userId = localStorage.getItem('userId');
+            console.log('User ID from localStorage:', userId);
+            
             if (!userId) {
                 alert('Please sign in to apply.');
                 window.location.href = 'signin.html';
@@ -288,8 +293,11 @@
                 applicantPhone: document.getElementById('applicantPhone').value,
                 coverLetter: document.getElementById('coverLetter').value,
                 appliedDate: new Date().toISOString(),
-                status: 'pending'
+                status: 'Pending'
             };
+
+            console.log('Form data being sent:', formData);
+            console.log('API URL:', '/api/users/' + userId + '/apply-internship');
 
             // Note: File upload would require FormData and multipart/form-data
             // For now, we'll just save the application data without the file
@@ -300,16 +308,24 @@
                 body: JSON.stringify(formData)
             })
             .then(function(res) {
-                if (!res.ok) throw new Error('Application failed');
-                return res.json();
+                return res.json().then(function(data) {
+                    if (!res.ok) {
+                        throw new Error(data.message || 'Application failed');
+                    }
+                    return data;
+                });
             })
-            .then(function(data) {
-                alert('Application submitted successfully! You can view your applications in your profile.');
-                closeApplicationModal();
+            .then(function(response) {
+                if (response.success) {
+                    alert('Application submitted successfully! You can view your applications in your profile.');
+                    closeApplicationModal();
+                } else {
+                    throw new Error(response.message || 'Application failed');
+                }
             })
             .catch(function(err) {
                 console.error('Error submitting application:', err);
-                alert('Failed to submit application. Please try again.');
+                alert('Failed to submit application: ' + err.message);
             });
         });
     }

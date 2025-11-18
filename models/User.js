@@ -94,6 +94,10 @@ const userSchema = new mongoose.Schema({
       default: 'Pending'
     },
     resumeDetails: {
+      applicantName: String,
+      applicantEmail: String,
+      applicantPhone: String,
+      coverLetter: String,
       skills: [String],
       experience: String,
       education: String
