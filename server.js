@@ -19,20 +19,23 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files (CSS, JS, images, HTML)
-app.use(express.static(path.join(__dirname)));
+// Configure EJS as view engine
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 // Import route modules
 const coursesRoutes = require('./routes/courses');
 const blogRoutes = require('./routes/blog');
 const authRoutes = require('./routes/auth');
 const usersRoutes = require('./routes/users');
+const internshipsRoutes = require('./routes/internships');
 
 // Use route modules
 app.use('/api/courses', coursesRoutes);
 app.use('/api/blog', blogRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/users', usersRoutes);
+app.use('/api/internships', internshipsRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
@@ -43,46 +46,37 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Serve HTML pages
+// Serve EJS pages (before static middleware so routes take priority)
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.render('pages/index');
 });
 
 app.get('/courses', (req, res) => {
-  res.sendFile(path.join(__dirname, 'courses.html'));
-});
-
-app.get('/blog', (req, res) => {
-  res.sendFile(path.join(__dirname, 'blog.html'));
-});
-
-app.get('/about', (req, res) => {
-  res.sendFile(path.join(__dirname, 'about.html'));
-});
-
-app.get('/contact', (req, res) => {
-  res.sendFile(path.join(__dirname, 'contact.html'));
-});
-
-app.get('/careers', (req, res) => {
-  res.sendFile(path.join(__dirname, 'careers.html'));
+  res.render('pages/courses');
 });
 
 app.get('/internships', (req, res) => {
-  res.sendFile(path.join(__dirname, 'internships.html'));
+  res.render('pages/internships');
 });
 
 app.get('/mentorship', (req, res) => {
-  res.sendFile(path.join(__dirname, 'mentorship.html'));
+  res.render('pages/mentorship');
 });
 
-app.get('/resources', (req, res) => {
-  res.sendFile(path.join(__dirname, 'resources.html'));
+app.get('/profile', (req, res) => {
+  res.render('pages/profile');
 });
 
 app.get('/signin', (req, res) => {
-  res.sendFile(path.join(__dirname, 'signin.html'));
+  res.render('pages/signin');
 });
+
+app.get('/signup', (req, res) => {
+  res.render('pages/signup');
+});
+
+// Serve static files (CSS, JS, images) - after routes so EJS takes priority
+app.use(express.static(path.join(__dirname)));
 
 // 404 handler for API routes
 app.use('/api/*', (req, res) => {

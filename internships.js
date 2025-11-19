@@ -61,71 +61,37 @@
     
     if (!listEl || !template) return;
 
-    // Hardcoded internships data (in a real app, this would come from an API)
-    var internships = [
-        new Internship({
-            title: 'Frontend Developer Intern',
-            company: 'TechCorp Inc.',
-            location: 'San Francisco, CA',
-            icon: '🚀',
-            description: 'Join our frontend team to build amazing user interfaces using React, TypeScript, and modern web technologies.',
-            tags: ['React', 'TypeScript', 'CSS'],
-            category: 'TECHNOLOGY',
-            applyUrl: '#'
-        }),
-        new Internship({
-            title: 'Marketing Analytics Intern',
-            company: 'DataDriven Solutions',
-            location: 'New York, NY',
-            icon: '📊',
-            description: 'Help analyze marketing campaigns and create data-driven insights to optimize marketing strategies.',
-            tags: ['Analytics', 'SQL', 'Marketing'],
-            category: 'MARKETING',
-            applyUrl: '#'
-        }),
-        new Internship({
-            title: 'UI/UX Design Intern',
-            company: 'Creative Studio',
-            location: 'Austin, TX',
-            icon: '🎨',
-            description: 'Create beautiful and intuitive user experiences for web and mobile applications.',
-            tags: ['Figma', 'Adobe Creative', 'Prototyping'],
-            category: 'DESIGN',
-            applyUrl: '#'
-        }),
-        new Internship({
-            title: 'Business Analyst Intern',
-            company: 'Insight Partners',
-            location: 'Remote',
-            icon: '📈',
-            description: 'Work with stakeholders to document requirements and improve operational processes.',
-            tags: ['Excel', 'Communication', 'Problem Solving'],
-            category: 'BUSINESS',
-            applyUrl: '#'
-        }),
-        new Internship({
-            title: 'Backend Developer Intern',
-            company: 'CloudTech Systems',
-            location: 'Seattle, WA',
-            icon: '⚙️',
-            description: 'Build scalable APIs and microservices using Node.js, Python, and cloud technologies.',
-            tags: ['Node.js', 'Python', 'AWS'],
-            category: 'TECHNOLOGY',
-            applyUrl: '#'
-        }),
-        new Internship({
-            title: 'Social Media Marketing Intern',
-            company: 'BrandBoost Agency',
-            location: 'Los Angeles, CA',
-            icon: '📱',
-            description: 'Manage social media campaigns and create engaging content for various platforms.',
-            tags: ['Content Creation', 'Social Media', 'Canva'],
-            category: 'MARKETING',
-            applyUrl: '#'
-        })
-    ];
-
-    allInternships = internships;
+    // Fetch internships from API
+    async function fetchInternships() {
+        try {
+            const response = await fetch('/api/internships');
+            const result = await response.json();
+            
+            if (result.success && result.data) {
+                // Convert API data to Internship objects
+                allInternships = result.data.map(function(item) {
+                    return new Internship({
+                        title: item.title,
+                        company: item.company,
+                        location: item.location,
+                        icon: item.icon || '💼',
+                        description: item.description,
+                        tags: item.tags || [],
+                        category: item.category || 'ALL',
+                        applyUrl: '#'
+                    });
+                });
+                
+                renderInternships(allInternships);
+            } else {
+                console.error('Failed to fetch internships:', result.message);
+                listEl.innerHTML = '<p style="text-align:center;padding:40px;color:#dc3545;">Failed to load internships. Please try again later.</p>';
+            }
+        } catch (error) {
+            console.error('Error fetching internships:', error);
+            listEl.innerHTML = '<p style="text-align:center;padding:40px;color:#dc3545;">Failed to load internships. Please try again later.</p>';
+        }
+    }
 
     // Function to render internships
     function renderInternships(internshipsToRender) {
@@ -143,8 +109,8 @@
         listEl.appendChild(frag);
     }
 
-    // Initial render
-    renderInternships(allInternships);
+    // Initial fetch and render
+    fetchInternships();
 
     // Search functionality
     if (searchInput) {

@@ -1,12 +1,12 @@
 // Profile page JavaScript - Fetch and display user data from MongoDB
 
-// Check if user is logged in
+// Check if user is logged in - redirect immediately
 const userId = localStorage.getItem('userId');
 
-// Redirect to signin if not logged in
+// Redirect to signin if not logged in (before page renders)
 if (!userId) {
-    alert('Please sign in to view your profile');
-    window.location.href = 'signin.html';
+    window.location.replace('/signin');
+    throw new Error('Not authenticated'); // Stop execution
 }
 
 // Load user profile data
